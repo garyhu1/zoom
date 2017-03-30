@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>放大镜</title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			.small-box{
+				width: 300px;
+				height: 500px;
+				margin: 30px;
+				float: left;
+				position: relative;
+			}
+			.small-box img{
+				width: 300px;
+				height: 500px;
+			}
+			.my-tool{
+				width: 60px;
+				height: 100px;
+				opacity: .5;
+				filter: alpha(opacity:50);
+				background: yellow;
+				position: absolute;
+				top: 0;
+				left: 0;
+				display: none;
+				cursor: move;
+			}
+			.my-tool.active{
+				display: block;
+			}
+			.big-box{
+				width: 300px;
+				height: 500px;
+				margin-top: 30px;
+				float: left;
+				position: relative;
+				overflow: hidden;
+				display: none;
+				border: 1px solid black;
+			}
+			.big-box.active{
+				display: block;
+			}
+			.big-box img{
+				width: 1500px;
+				height: 2500px;
+				position: absolute;
+				top: 0;
+				left: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="small-box" id="smallBox">
+			<img src="../img/img6.jpg" />
+			<div class="my-tool" id="tool"></div>
+		</div>
+		<div class="big-box" id="bigBox">
+			<img src="../img/img6.jpg" id="bigImg" />
+		</div>
+	</body>
+	<script type="text/javascript">
+		window.onload = function() {
+			var bigBox = document.getElementById("bigBox");
+			var smallBox = document.getElementById("smallBox");
+			var tool = document.getElementById("tool");
+			var bigImg = document.getElementById("bigImg");
+			
+			smallBox.onmouseenter = function() {
+				tool.className = 'my-tool active';
+				bigBox.className = 'big-box active';
+			}
+			smallBox.onmouseleave = function() {
+				tool.className = 'my-tool';
+				bigBox.className = 'big-box';
+			}
+			
+			smallBox.onmousemove = function(e) {
+				var _e = window.event||e;
+				var x = _e.clientX - this.offsetLeft - tool.offsetWidth/2;
+				var y = _e.clientY - this.offsetTop - tool.offsetHeight/2;
+				
+				if(x<0){
+					x = 0;
+				}
+				if(y<0){
+					y=0;
+				}
+				if(x>this.offsetWidth-tool.offsetWidth){
+					x = this.offsetWidth-tool.offsetWidth;
+				}
+				if(y>this.offsetHeight-tool.offsetHeight){
+					y = this.offsetHeight-tool.offsetHeight;
+				}
+				
+				tool.style.left = x +"px";
+				tool.style.top = y +"px";
+				bigImg.style.left = -x*5 +"px";
+				bigImg.style.top = -y*5 +"px";
+			}
+		}
+	</script>
+</html>
